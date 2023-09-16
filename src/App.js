@@ -1,23 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
-
+import { Route, Routes } from "react-router-dom";
+import "./App.css";
+import HomePage from "./Screens/HomePage";
+import SignIn from "./Screens/SignIn";
+import SignUp from "./Screens/SignUp";
+import ForgotPassword from "./Screens/ForgotPassword";
+import CheckForgetPassOtp from "./Screens/CheckForgetPassOtp";
+import ChangePassword from "./Screens/ChangePassword";
+import CustomizePizza from "./Screens/CustomizePizza";
+import CartPage from "./Screens/CartPage";
+import Address from "./Screens/Address";
+import Payment from "./Screens/Payment";
+import OrderPlaced from "./Screens/OrderPlaced";
+import OrderSummary from "./Screens/OrderSummary";
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Routes>
+        <Route path="/" element={<SignIn />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/forgotpassword" element={<ForgotPassword />} />
+        <Route path="/forpass-otp-confirm" element={<CheckForgetPassOtp />} />
+        <Route path="/changepassword" element={<ChangePassword />} />
+        <Route path="/homepage" element={<HomePage />} />
+        <Route path="/customizepizza/:id" element={<CustomizePizza />} />
+        <Route path="/cartpage" element={<CartPage />} />
+        <Route path="/address" element={<Address />} />
+        <Route path="/payment" element={<Payment />} />
+        <Route path="/orderplaced" element={<OrderPlaced />} />
+        <Route path="/ordersummary" element={<OrderSummary />} />
+      </Routes>
     </div>
   );
 }
