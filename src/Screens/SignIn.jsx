@@ -51,7 +51,6 @@ export default function SignIn() {
        try {
         const response=await axios.post("http://localhost:9000/user/signin",values)
         if(response){
-          console.log(response.data.data);
           localStorage.setItem("AuthToken",response.data.data.token)
           // navigate('/homepage')
         }
@@ -67,7 +66,7 @@ if(token){
 }
     })
   return (
-    <Container sx={{ boxShadow: 5 }} component="main" maxWidth="xs">
+    <Container style={{backgroundColor: "#fff"}} sx={{ boxShadow: 5 }} component="main" maxWidth="xs">
       <CssBaseline />
       <Box
         sx={{
@@ -136,12 +135,12 @@ if(token){
           </form>
           <Grid container>
             <Grid item xs>
-              <Link onClick={() => navigate("/forgotpassword")} variant="body2">
+              <Link style={{cursor:"pointer"}} onClick={() => navigate("/forgotpassword")} variant="body2">
                 Forgot password?
               </Link>
             </Grid>
             <Grid item>
-              <Link onClick={() => navigate("/signup")} variant="body2">
+              <Link  style={{cursor:"pointer"}} onClick={() => navigate("/signup")} variant="body2" >
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>

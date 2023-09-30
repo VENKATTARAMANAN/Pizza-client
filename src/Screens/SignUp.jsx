@@ -52,7 +52,7 @@ alert(error.response?.data?.data)
     });
 
   return (
-    <Container sx={{ boxShadow: 5 }} component="main" maxWidth="xs">
+    <Container sx={{ boxShadow: 5 ,bgcolor:"white"}} component="main" maxWidth="xs">
       <CssBaseline />
       <Box
         sx={{
@@ -117,7 +117,7 @@ alert(error.response?.data?.data)
         </form>
         <Grid container justifyContent="center">
           <Grid item>
-            <Link onClick={() => navigate("/signin")} variant="body2">
+            <Link style={{cursor:"pointer"}} onClick={() => navigate("/signin")} variant="body2">
               Already have an account? Sign up
             </Link>
           </Grid>

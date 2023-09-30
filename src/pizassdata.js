@@ -45,6 +45,8 @@ const pizzadata = [
     category: "nonveg",
     image: "https://www.dominos.co.in/files/items/Pepper_Barbeque.jpg",
     description: "Pepper barbecue chicken for that extra zing",
+    deleteflag:false,
+      stock:25,
   },
   {
     name: "Non Veg Supreme",
@@ -94,6 +96,8 @@ const pizzadata = [
     image: "https://www.dominos.co.in/files/items/Non-Veg_Supreme.jpg",
     description:
       "Supreme combination of black olives, onion, capsicum, grilled mushroom, pepper barbecue chicken, peri-peri chicken & grilled chicken rashers",
+      deleteflag:false,
+      stock:25,
   },
   {
     name: "Golden Corn Pizza",
@@ -141,6 +145,8 @@ const pizzadata = [
     category: "veg",
     description: "A delectable combination of sweet & juicy golden corn",
     image: "https://www.crazymasalafood.com/wp-content/images/golden-1.jpg",
+    deleteflag:false,
+      stock:25,
   },
   {
     name: "Fiery Jalapeno & Paprika",
@@ -189,6 +195,8 @@ const pizzadata = [
     image: "https://www.crazymasalafood.com/wp-content/images/jalepeno.jpg",
     description:
       "A super spicy veg pizza with a new spicy peri peri sauce and topped with jalapeno & red paprika.",
+      deleteflag:false,
+      stock:25,
   },
   {
     name: "Margerita",
@@ -237,6 +245,8 @@ const pizzadata = [
     image:
       "https://cdn.loveandlemons.com/wp-content/uploads/2019/09/margherita-pizza-500x500.jpg",
     description: "Classic delight with 100% real mozzarella cheese",
+    deleteflag:false,
+      stock:25,
   },
   {
     name: "Double Cheese Margherita Pizza",
@@ -285,6 +295,8 @@ const pizzadata = [
     image: "https://www.crazymasalafood.com/wp-content/images/double-1.jpg",
     description:
       "A classic delight loaded with extra 100% real mozzarella cheese",
+      deleteflag:false,
+      stock:25,
   },
 ];
 export default pizzadata;

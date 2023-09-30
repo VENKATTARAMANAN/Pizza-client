@@ -21,10 +21,8 @@ import { ADD_TO_CART, RESET_CART } from "../Redux/Slices/pizzaSlice";
 export default function Navbar({children}) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  // const [cartValue, setCartValue] = useState([]);
   const [show,setShow]=useState(children[0]);
   const [anchorEl, setAnchorEl] = useState(null);
-  // const [data,setData]=useState(0)
   const cartArr = useSelector((state) => state.cartArr.cart);
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -55,7 +53,6 @@ let sum=0
       );
       dispatch(RESET_CART());
       dispatch(ADD_TO_CART(data.data));
-      // dispatch(GET_TO_CART(data.data))
     } catch (error) {
       alert(error?.data);
     }
@@ -69,20 +66,19 @@ useEffect(()=>{
 
   return (
     <>
-      <Box sx={{ flexGrow: 0 }}>
-        <AppBar position="static" sx={{ bgcolor: "white" }}>
-          <Toolbar sx={{ mx: 5 }}>
+      <Box sx={{ flexGrow: 0 }} >
+        <AppBar className="sticky" sx={{ bgcolor: "white" }}>
+          <Toolbar sx={{ mx: 3}}>
             <div onClick={() => navigate("/homepage")}>
-              {" "}
-              <img src={pizzaicon} alt="logo" width={80} />
+              <img src={pizzaicon} alt="logo" width={65} style={{cursor:"pointer"}} />
             </div>
             <Typography
               variant="h6"
               component="div"
-              sx={{ flexGrow: 1, color: "black" }}
+              sx={{ flexGrow: 1, color: "black",fontFamily:" 'Croissant One', cursive",cursor:"pointer"}}
               onClick={() => navigate("/homepage")}
             >
-              DELICIOUS PIZZA
+             Delicious Pizza
             </Typography>
             {show ? <Badge
               badgeContent={sum > 0 ? sum : 0}
@@ -121,8 +117,7 @@ useEffect(()=>{
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem onClick={()=>navigate("/myorders")}>My Orders</MenuItem>
                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
               </Menu>
             </div>

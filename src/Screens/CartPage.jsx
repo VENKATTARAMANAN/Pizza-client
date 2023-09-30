@@ -10,27 +10,26 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { useSelector } from "react-redux/es/hooks/useSelector";
 import { Link, useNavigate } from "react-router-dom";
+import SnackBarPizza from "../Components/SnackBarPizza";
 
 const CartPage = () => {
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const [cartData, setCartData] = useState([]);
-  // const [quantity, setQuantity] = useState(1);
   const [price, setPrice] = useState("");
+  const [snackdata,setSnackData]=useState("");
   const cartArr = useSelector((state) => state.cartArr.cart);
-  // console.log(cartData);
-  // let sum=0
-  //   const val=cartArr.map((cartArr)=>(
-  //     sum+=cartArr.quantity
-  //   ))
+
   const getCartData = async () => {
     try {
       const token = localStorage.getItem("AuthToken");
       const { data } = await axios.post(
         "http://localhost:9000/cart/showcartquantity",
-        { token },{
-        headers: {
-          Authorization: localStorage.getItem("AuthToken"),
-        },}
+        { token },
+        {
+          headers: {
+            Authorization: localStorage.getItem("AuthToken"),
+          },
+        }
       );
       setCartData(data.data);
       let sum = 0;
@@ -45,64 +44,79 @@ const CartPage = () => {
 
   const subQuantity = async (e) => {
     try {
-      const response = await axios.post("http://localhost:9000/cart/subqty", {
-        _id: e,
-      },{
-        headers: {
-          Authorization: localStorage.getItem("AuthToken"),
+      const response = await axios.put(
+        "http://localhost:9000/cart/subqty",
+        {
+          _id: e,
         },
-      });
-      getCartData();
-    } catch (error) {
-      console.log(error);
-    }
-    
-  };
-  const addQuantity = async (e) => {
-    try {
-      const response = await axios.post("http://localhost:9000/cart/addqty", {
-        _id: e,
-      },{
-        headers: {
-          Authorization: localStorage.getItem("AuthToken"),
-        },
-      });
-      getCartData();
-    } catch (error) {
-      console.log(error);
-    }
-    
-  };
-
-  const deleteCartPizza = async (e) => {
-    try {
-      const response = await axios.post(
-        "http://localhost:9000/cart/deletecartpizza",
-        { _id: e },{
+        {
           headers: {
             Authorization: localStorage.getItem("AuthToken"),
           },
         }
       );
       getCartData();
+      setSnackData(response.data.data)
+    } catch (error) {
+      console.log(error);
+
+    }
+  };
+  const addQuantity = async (e) => {
+    try {
+      const response = await axios.put(
+        "http://localhost:9000/cart/addqty",
+        {
+          _id: e,
+        },
+        {
+          headers: {
+            Authorization: localStorage.getItem("AuthToken"),
+          },
+        }
+      );
+      getCartData();
+      setSnackData(response.data.data)
+    } catch (error) {
+      console.log(error);
+      setSnackData(error.response.data.data)
+    }
+  };
+
+  const deleteCartPizza = async (e) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:9000/cart/deletecartpizza",
+        { _id: e },
+        {
+          headers: {
+            Authorization: localStorage.getItem("AuthToken"),
+          },
+        }
+      );
+      getCartData();
+      setSnackData(response.data.data)
     } catch (error) {
       console.log(error);
     }
   };
   useEffect(() => {
     getCartData();
-  },[]);
+  }, []);
   return (
     <Navbar>
       {false}
-     { cartData?.length !== 0  ? 
+      <SnackBarPizza 
+      data={snackdata}
+      />
+      {cartData?.length !== 0 ? (
         <div className="cart-container">
           <div className="cart-left">
             <div className="cart-left-header">
-              <h1>CART ITEMS</h1>
+              <h3>CART ITEMS</h3>
             </div>
             {cartData.map((val, idx) => (
-              <div key={idx} className="cart-data">
+              <div key={idx} className="cart-dataes">
                 <div className="cart-img">
                   <img src={val.image} alt="cart" />
                 </div>
@@ -136,7 +150,7 @@ const CartPage = () => {
           </div>
           <div className="cart-right">
             <div className="cart-right-header">
-              <h1>PRICE DETAILS</h1>
+              <h3>PRICE DETAILS</h3>
             </div>
 
             <div className="price-details-body">
@@ -154,7 +168,7 @@ const CartPage = () => {
               </div>
               <hr style={{ opacity: 0.4 }} />
               <div className="total">
-                <div>Total Ammount</div>
+                <div>Total Amount</div>
                 <div>{price}</div>
               </div>
               <hr style={{ opacity: 0.4 }} />
@@ -162,18 +176,19 @@ const CartPage = () => {
                 <Button
                   style={{
                     backgroundColor: "rgb(251, 197, 60)",
-                    color: "rgb(213, 5, 5)",
+                    color: "#000",
+                    fontWeight: "bold",
                   }}
                   sx={{ width: 140 }}
-                  onClick={()=>navigate('/ordersummary')}
+                  onClick={() => navigate("/address")}
                 >
-                 Check Out
+                  Check Out
                 </Button>
               </div>
             </div>
           </div>
         </div>
-       : 
+      ) : (
         <div className="lottie-empty-cart">
           <Lottie
             style={{ height: "350px" }}
@@ -184,14 +199,15 @@ const CartPage = () => {
             onClick={() => navigate("/homepage")}
             style={{
               backgroundColor: "rgb(251, 197, 60)",
-              color: "rgb(213, 5, 5)",
+              color: "#000",
+              fontWeight: "bold",
             }}
             sx={{ width: 140 }}
           >
-          Shop Now
+            Shop Now
           </Button>
         </div>
-      }
+      )}
     </Navbar>
   );
 };

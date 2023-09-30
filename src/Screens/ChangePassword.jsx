@@ -33,7 +33,7 @@ export default function ChangePassword() {
         try {
           const pass = values.password;
           const token=localStorage.getItem("resetAuth")
-         const response=await axios.post("http://localhost:9000/user/change-password",{token,pass})
+         const response=await axios.put("http://localhost:9000/user/change-password",{token,pass})
          if(response){
           localStorage.removeItem("resetAuth");
           navigate('/')
@@ -55,7 +55,7 @@ export default function ChangePassword() {
       >
         <Avatar sx={{ m: 1, width: 100, height: 100 }} src={pizzaicon} />
       </Box>
-      <Container sx={{ boxShadow: 5 }} component="main" maxWidth="xs">
+      <Container sx={{ boxShadow: 5 ,bgcolor:"white"}} component="main" maxWidth="xs">
         <Box
           sx={{
             mt: 4,

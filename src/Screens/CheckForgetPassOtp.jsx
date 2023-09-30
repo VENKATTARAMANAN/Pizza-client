@@ -40,7 +40,7 @@ const CheckForgetPassOtp = () => {
       >
         <Avatar sx={{ m: 1, width: 100, height: 100 }} src={pizzaicon} />
       </Box>
-      <Container sx={{ boxShadow: 5 }} maxWidth="xs">
+      <Container sx={{ boxShadow: 5 ,bgcolor:"white"}} maxWidth="xs">
         <Box
           sx={{
             mt: 4,
@@ -56,7 +56,7 @@ const CheckForgetPassOtp = () => {
           </Typography>
           <Typography>
             To continue, complete this verification step. We've sent an OTP to
-            the email ramananperumal457@gmail.com. Please enter it below to
+            your email. Please enter it below to
             complete verification.
           </Typography>
           <form onSubmit={handleSubmit}>

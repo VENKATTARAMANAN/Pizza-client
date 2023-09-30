@@ -16,6 +16,7 @@ import { useFormik } from "formik";
 import axios from "axios";
 import MuiAlert from "@mui/material/Alert";
 import { Stack } from "@mui/system";
+import SnackBarPizza from "./SnackBarPizza";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -26,6 +27,7 @@ const Pizza = ({ pizza, index }) => {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [data, setData] = useState("");
+
   var { values, handleSubmit, handleChange } = useFormik({
     initialValues: {
       selectsize: "regular",
@@ -34,12 +36,12 @@ const Pizza = ({ pizza, index }) => {
       image: pizza.image,
       auth: localStorage.getItem("AuthToken"),
       pizzaid: pizza._id,
-      quantity:1,
+      quantity: 1,
     },
     onSubmit: async () => {
       try {
         setOpen(true);
-        const { data } = await axios.post(
+        const { data,status } = await axios.put(
           "http://localhost:9000/cart/addtocart",
           values,
           {
@@ -48,10 +50,12 @@ const Pizza = ({ pizza, index }) => {
             },
           }
         );
- 
-        setData(data.data);
-        dispatch(ADD_TO_CART([values]));
+        if(status === 200){
+          setData(data.data);
+          dispatch(ADD_TO_CART([values]));
+        }
       } catch (error) {
+        setData(error.response.data.data);
         console.log(error);
       }
     },
@@ -63,25 +67,14 @@ const Pizza = ({ pizza, index }) => {
     }
     setOpen(false);
   };
-
   values = { ...values, price: pizza.prices[0][values.selectsize] };
-
-  // const addToCart = (qty) => {
-  //   let cartObj = { quantity:qty };
-  //   delete cartObj.varients;
-  //   delete cartObj.prices;
-  //   cartObj.quantity = qty;
-  //   cartObj.varint = vrnt;
-
-  // };
-
   return (
     <div key={index}>
       <div className="card">
         <img
           src={pizza.image}
           alt="Avatar"
-          style={{ width: "100%", height: "200px" }}
+          style={{ width: "100%", height: "200px",cursor:"pointer" }}
           onClick={() => navigate(`/customizepizza/${pizza._id}`)}
         />
         <div className="card-container">
@@ -126,7 +119,8 @@ const Pizza = ({ pizza, index }) => {
                   type="submit"
                   style={{
                     backgroundColor: "rgb(251, 197, 60)",
-                    color: "rgb(213, 5, 5)",
+                    color: "#000",
+                    fontWeight: "bold",
                   }}
                 >
                   Add To Cart
@@ -136,7 +130,7 @@ const Pizza = ({ pizza, index }) => {
           </form>
         </div>
       </div>
-      <Stack spacing={2} sx={{ width: "100%" }}>
+      <Stack sx={{ width: "100%" }}>
         <Snackbar open={open} autoHideDuration={1000} onClose={handleClose}>
           <Alert severity="success" sx={{ width: "100%" }}>
             {data}

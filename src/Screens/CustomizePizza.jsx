@@ -23,7 +23,6 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { ADD_TO_CART } from "../Redux/Slices/pizzaSlice";
 import { useDispatch } from "react-redux";
-// import Razorpay from 'razorpay';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -53,25 +52,16 @@ function getStylings(nonVegTopping, name, theme) {
   };
 }
 
-const fieldValidationSchema = yup.object({
-  // selectsize: yup.string().required("Please Select any one"),
-  // pizzabase: yup.string().required("Please Select any one"),
-  // sauce: yup.string().required("Please Select any one"),
-  // cheese: yup.string().required("Please Select any one"),
-});
-
 const CustomizePizza = () => {
   const navigate=useNavigate();
   const dispatch = useDispatch();
   const [vegTopping, setVegTopping] = useState([]);
   const [nonVegTopping, setNonVegTopping] = useState([]);
   const [pizzaPrice, setPizzaPrice] = useState(0);
-  // const [pizzasize,setPizzaSize]=useState("");
   const [extraNonvegPrice, setExtraNonvegPrice] = useState(0);
   const [extraVegPrice, setExtraVegPrice] = useState(0);
   const [response, setResponse] = useState({});
   const { id } = useParams();
-// console.log(response);
   const { values, handleChange, handleSubmit, handleBlur, errors, touched } = useFormik({
     initialValues: {
       selectsize:"regular",
@@ -87,7 +77,6 @@ const CustomizePizza = () => {
       customize: "customized pizza",
       auth: localStorage.getItem("AuthToken"),
     },
-    validationSchema: fieldValidationSchema,
     onSubmit: async (values) => {
       try {
         values.price = pizzaPrice + extraVegPrice + extraNonvegPrice;
@@ -95,7 +84,7 @@ const CustomizePizza = () => {
         values.vegtoppings = vegTopping;
         values.name=response.name;
         values.image=response.image;
-        const { data } = await axios.post(
+        const { data } = await axios.put(
           "http://localhost:9000/cart/addtocart",
           values,
           {
@@ -122,7 +111,6 @@ const CustomizePizza = () => {
       });
       setResponse(responses.data.data);
       setPizzaPrice(responses.data.data?.prices[0]?.regular);
-      // values.price = responses.data.data?.prices[0]?.regular;
     } catch (error) {
       console.log(error);
       alert(error.response?.data?.data);
@@ -161,59 +149,7 @@ const CustomizePizza = () => {
     setNonVegTopping(value);
   };
 
-  //   function initPayment(data) {
-  //   const options = {
-  //     key: "rzp_test_aZuiShzt2B1yoe",
-  //     amount: data.amount,
-  //     currency: data.currency,
-  //     description: "Test Transaction",
-  //     order_id: data.id,
-  //     handler: async (response) => {
-  //       try {
-  //         const { datas } = await axios.post(
-  //           "http://localhost:9000/pizza/verify",
-  //           response,
-  //           {
-  //             headers: {
-  //               Authorization: localStorage.getItem("AuthToken"),
-  //             },
-  //           }
-  //         );
-  //         console.log(datas);
-  //       } catch (error) {
-  //         console.log(error);
-  //       }
-  //     },
-  //     theme: {
-  //       color: "#3399cc",
-  //     },
-  //   };
-
-  //   var razor = new window.Razorpay(options);
-  //   razor.open();
-  // }
-
-  // const handlePayment = async () => {
-  //   try {
-  //     const response = await axios.post(
-  //       "http://localhost:9000/pizza/orders",
-  //       { amount: 500 },
-  //       {
-  //         headers: {
-  //           Authorization: localStorage.getItem("AuthToken"),
-  //         },
-  //       }
-  //     );
-  //     console.log(response.data.data);
-  //     let value = response.data.data;
-  //     console.log(value.currency, value.amount);
-  //     initPayment(value);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  return (
+   return (
     <Navbar>
       {true},
       <div className="customize-container">
@@ -222,7 +158,7 @@ const CustomizePizza = () => {
             <img src={response.image} alt="logo" />
           </div>
           <div className="card-right">
-            <h1>{response.name}</h1>
+            <h2>{response.name}</h2>
             <p>{response.description}</p>
             <br />
             <hr />
@@ -427,7 +363,8 @@ const CustomizePizza = () => {
                     type="submit"
                     style={{
                       backgroundColor: "rgb(251, 197, 60)",
-                      color: "rgb(213, 5, 5)",
+                      color: "#000",
+                      fontWeight:"bold"
                     }}
                   >
                     Add to cart
@@ -436,7 +373,6 @@ const CustomizePizza = () => {
               </div>
             </form>
             <br />
-            {/* <Button variant="contained" onClick={() => handlePayment()}>Pay Now</Button> */}
             <br />
             <br />
           </div>

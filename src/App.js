@@ -12,6 +12,8 @@ import Address from "./Screens/Address";
 import Payment from "./Screens/Payment";
 import OrderPlaced from "./Screens/OrderPlaced";
 import OrderSummary from "./Screens/OrderSummary";
+import UpdateAddress from "./Screens/UpdateAddress";
+import MyOrders from "./Screens/MyOrders";
 function App() {
   return (
     <div className="App">
@@ -26,9 +28,11 @@ function App() {
         <Route path="/customizepizza/:id" element={<CustomizePizza />} />
         <Route path="/cartpage" element={<CartPage />} />
         <Route path="/address" element={<Address />} />
-        <Route path="/payment" element={<Payment />} />
+        <Route path="/payment/:price" element={<Payment />} />
         <Route path="/orderplaced" element={<OrderPlaced />} />
         <Route path="/ordersummary" element={<OrderSummary />} />
+        <Route path="/updateaddress" element={<UpdateAddress/>}/>
+        <Route path="/myorders" element={<MyOrders/>}/>
       </Routes>
     </div>
   );

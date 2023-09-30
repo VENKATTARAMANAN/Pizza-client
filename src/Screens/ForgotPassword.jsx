@@ -39,7 +39,7 @@ if(response){
       >
 <Avatar sx={{ m: 1, width: 100, height: 100 }} src={pizzaicon} />
       </Box>
-      <Container sx={{ boxShadow: 5 }} maxWidth="xs">
+      <Container sx={{ boxShadow: 5 ,bgcolor:"white"}} maxWidth="xs">
         <Box
           sx={{
             mt: 4,

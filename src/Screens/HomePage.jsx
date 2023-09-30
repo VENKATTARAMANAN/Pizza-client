@@ -32,19 +32,20 @@ navigate('/')
   }, []);
   return (
     <Navbar>
-      {true},
-      <br/>
-      <h1 className="topic">"Select Pizza and Customize It In Your Own"</h1>
+      {true}
+      <div style={{marginTop:"100px",fontSize:"13px"}}>
+      <h2 className="topic">"Select Pizza and Customize It In Your Own"</h2>
+      </div>
       <div className="grid-container">
         <div className="row">
     {pizzadata?.map((pizza, index) => (
-      <div key={index}>
-    <Pizza index={index} pizza={pizza} />
-    </div>
+     pizza.stock > 0 ?  <div key={index}>
+     <Pizza index={index} pizza={pizza} />
+     </div> : <></>
     ))}
     </div>
     </div>
-    </Navbar>
+   </Navbar>
     
   );
 };
