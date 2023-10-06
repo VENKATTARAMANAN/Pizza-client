@@ -4,19 +4,25 @@ import axios from "axios";
 import Lottie from "lottie-react";
 import pizzadata from "../pizassdata";
 import emptycart from "../assets/empty_cart.json";
-import { Button, IconButton } from "@mui/material";
+import { Button, IconButton, Snackbar } from "@mui/material";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { useSelector } from "react-redux/es/hooks/useSelector";
 import { Link, useNavigate } from "react-router-dom";
-import SnackBarPizza from "../Components/SnackBarPizza";
+import MuiAlert from "@mui/material/Alert";
+import { Stack } from "@mui/system";
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const CartPage = () => {
   const navigate = useNavigate();
   const [cartData, setCartData] = useState([]);
   const [price, setPrice] = useState("");
-  const [snackdata,setSnackData]=useState("");
+  const [open, setOpen] = useState(false);
+  const [data,setData]=useState("");
   const cartArr = useSelector((state) => state.cartArr.cart);
 
   const getCartData = async () => {
@@ -55,8 +61,9 @@ const CartPage = () => {
           },
         }
       );
+      setOpen(true);
       getCartData();
-      setSnackData(response.data.data)
+      setData(response.data.data)
     } catch (error) {
       console.log(error);
 
@@ -75,11 +82,13 @@ const CartPage = () => {
           },
         }
       );
+      setOpen(true);
       getCartData();
-      setSnackData(response.data.data)
+      setData(response.data.data)
     } catch (error) {
+      setOpen(true);
       console.log(error);
-      setSnackData(error.response.data.data)
+      setData(error.response.data.data)
     }
   };
 
@@ -94,8 +103,9 @@ const CartPage = () => {
           },
         }
       );
+      setOpen(true);
       getCartData();
-      setSnackData(response.data.data)
+      setData(response.data.data)
     } catch (error) {
       console.log(error);
     }
@@ -103,15 +113,20 @@ const CartPage = () => {
   useEffect(() => {
     getCartData();
   }, []);
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
+  };
+
   return (
     <Navbar>
       {false}
-      <SnackBarPizza 
-      data={snackdata}
-      />
       {cartData?.length !== 0 ? (
         <div className="cart-container">
-          <div className="cart-left">
+          <div className="carts-left">
             <div className="cart-left-header">
               <h3>CART ITEMS</h3>
             </div>
@@ -208,6 +223,13 @@ const CartPage = () => {
           </Button>
         </div>
       )}
+       <Stack sx={{ width: "100%" }}>
+        <Snackbar open={open} autoHideDuration={1000} onClose={handleClose}>
+          <Alert severity="success" sx={{ width: "100%" }}>
+            {data}
+          </Alert>
+        </Snackbar>
+      </Stack>
     </Navbar>
   );
 };

@@ -32,8 +32,8 @@ const MyOrders = () => {
         }
       );
       if (data.data.statuscode === 200) {
-        setCod(data.data.cod);
-        setOnlinePaid(data.data.onlinepayment);
+        setCod(data.data.cod.reverse());
+        setOnlinePaid(data.data.onlinepayment.reverse());
       }
     } catch (error) {
       console.log(error);

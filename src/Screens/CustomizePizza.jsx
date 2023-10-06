@@ -3,7 +3,6 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { useEffect } from "react";
-import pizzadata from "../pizassdata";
 import Navbar from "../Components/Navbars";
 
 import {
@@ -76,6 +75,7 @@ const CustomizePizza = () => {
       quantity:1,
       customize: "customized pizza",
       auth: localStorage.getItem("AuthToken"),
+      pizzaid:id,
     },
     onSubmit: async (values) => {
       try {
@@ -84,7 +84,8 @@ const CustomizePizza = () => {
         values.vegtoppings = vegTopping;
         values.name=response.name;
         values.image=response.image;
-        const { data } = await axios.put(
+console.log(values);
+        const { data,status } = await axios.put(
           "http://localhost:9000/cart/addtocart",
           values,
           {
@@ -93,8 +94,10 @@ const CustomizePizza = () => {
             },
           }
         );
+        if(status === 200){
         dispatch(ADD_TO_CART([values]));
         navigate("/cartpage")
+        }
       } catch (error) {
         console.log(error);
       }

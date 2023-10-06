@@ -39,9 +39,9 @@ navigate('/')
       <div className="grid-container">
         <div className="row">
     {pizzadata?.map((pizza, index) => (
-     pizza.stock > 0 ?  <div key={index}>
+    <div key={index}>
      <Pizza index={index} pizza={pizza} />
-     </div> : <></>
+     </div> 
     ))}
     </div>
     </div>

@@ -92,7 +92,7 @@ const OrderSummary = () => {
           </div>
           <div className="ordersummary-values">
             {cartData.map((val, idx) => (
-              <div key={idx} className="ordersummaey-val">
+              <div key={idx} className="ordersummary-val">
                 <div className="cart-img">
                   <img src={val.image} alt="cart" />
                 </div>
