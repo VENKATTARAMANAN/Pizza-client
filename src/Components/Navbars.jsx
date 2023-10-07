@@ -17,6 +17,7 @@ import axios from "axios";
 import { useSelector } from "react-redux/es/hooks/useSelector";
 import { useDispatch } from "react-redux";
 import { ADD_TO_CART, RESET_CART } from "../Redux/Slices/pizzaSlice";
+import { url } from "../Config/api";
 
 export default function Navbar({children}) {
   const navigate = useNavigate();
@@ -45,16 +46,16 @@ let sum=0
     try {
       const token = localStorage.getItem("AuthToken");
       const { data } = await axios.post(
-        "http://localhost:9000/cart/showcartquantity",{ token },{
+        `${url}/cart/showcartquantity`,{ token },{
           headers: {
-            Authorization: localStorage.getItem("AuthToken"),
+            authorization: localStorage.getItem("AuthToken"),
           },
         },
       );
       dispatch(RESET_CART());
       dispatch(ADD_TO_CART(data.data));
     } catch (error) {
-      alert(error?.data);
+      console.log(error);
     }
   }
 

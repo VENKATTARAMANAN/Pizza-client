@@ -7,6 +7,7 @@ import axios from "axios";
 import { Stack } from "@mui/system";
 import MuiAlert from "@mui/material/Alert";
 import * as yup from "yup";
+import { url } from "../Config/api";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -46,7 +47,7 @@ validationSchema: fieldValidationSchema,
       setOpen(true);
       try {
         const response = await axios.post(
-          "http://localhost:9000/address/addaddress",
+          `${url}/address/addaddress`,
           values,{
             headers:{
               Authorization:localStorage.getItem("AuthToken")
@@ -72,10 +73,10 @@ validationSchema: fieldValidationSchema,
     try {
       const token = localStorage.getItem("AuthToken");
       const response = await axios.post(
-        "http://localhost:9000/address/getaddress",
+        `${url}/address/getaddress`,
         { token: token },{
           headers:{
-            Authorization:localStorage.getItem("AuthToken")
+            Authorization:token
           }
         }
       );

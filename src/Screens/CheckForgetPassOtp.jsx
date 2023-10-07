@@ -7,6 +7,7 @@ import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { url } from "../Config/api";
 
 const CheckForgetPassOtp = () => {
   const navigate = useNavigate();
@@ -18,14 +19,14 @@ const CheckForgetPassOtp = () => {
     console.log(otp);
     try {
       const response = await axios.post(
-        "http://localhost:9000/user/otp-confirm",
+        `${url}/user/otp-confirm`,
         otp
       );
       if (response.status === 200) {
         navigate("/changepassword");
       }
     } catch (error) {
-      alert(error.response?.data?.data)
+     console.log(error);
     }
   };
   return (
@@ -55,7 +56,7 @@ const CheckForgetPassOtp = () => {
             Verification required
           </Typography>
           <Typography>
-            To continue, complete this verification step. We've sent an OTP to
+            To continue, complete this verification step. We've sent an "Capcha Code" to
             your email. Please enter it below to
             complete verification.
           </Typography>
@@ -63,7 +64,7 @@ const CheckForgetPassOtp = () => {
             <TextField
               margin="normal"
               fullWidth
-              label="OTP"
+              label="Capcha Code"
               type="text"
               value={otp.email}
               onChange={(e) =>

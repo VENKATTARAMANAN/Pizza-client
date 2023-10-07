@@ -11,7 +11,8 @@ import { Button, Step, StepLabel, Stepper } from "@mui/material";
 import Lottie from "lottie-react";
 import { useNavigate } from "react-router-dom";
 import emptycart from "../assets/empty_cart.json";
-import noorders from "../assets/no_orders.json"
+import noorders from "../assets/no_orders.json";
+import { url } from "../Config/api";
 
 const steps = ["Order Confirmed", "Preparing Your pizza", "Out For Delivery","Order Delivered"];
 
@@ -24,7 +25,7 @@ const MyOrders = () => {
   const getOrders = async () => {
     try {
       const { data } = await axios.post(
-        "http://localhost:9000/myorders/getmyorders",
+        `${url}/myorders/getmyorders`,
         { token: token },{
           headers:{
             Authorization:localStorage.getItem("AuthToken")

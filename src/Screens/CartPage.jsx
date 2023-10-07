@@ -9,9 +9,10 @@ import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { useSelector } from "react-redux/es/hooks/useSelector";
-import { Link, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import MuiAlert from "@mui/material/Alert";
 import { Stack } from "@mui/system";
+import { url } from "../Config/api";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -29,7 +30,7 @@ const CartPage = () => {
     try {
       const token = localStorage.getItem("AuthToken");
       const { data } = await axios.post(
-        "http://localhost:9000/cart/showcartquantity",
+        `${url}/cart/showcartquantity`,
         { token },
         {
           headers: {
@@ -51,7 +52,7 @@ const CartPage = () => {
   const subQuantity = async (e) => {
     try {
       const response = await axios.put(
-        "http://localhost:9000/cart/subqty",
+        `${url}/cart/subqty`,
         {
           _id: e,
         },
@@ -72,7 +73,7 @@ const CartPage = () => {
   const addQuantity = async (e) => {
     try {
       const response = await axios.put(
-        "http://localhost:9000/cart/addqty",
+        `${url}/cart/addqty`,
         {
           _id: e,
         },
@@ -95,7 +96,7 @@ const CartPage = () => {
   const deleteCartPizza = async (e) => {
     try {
       const response = await axios.post(
-        "http://localhost:9000/cart/deletecartpizza",
+        `${url}/cart/deletecartpizza`,
         { _id: e },
         {
           headers: {

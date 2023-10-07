@@ -7,6 +7,7 @@ import axios from "axios";
 import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { url } from "../Config/api";
 
 const ForgotPassword = () => {
   const navigate=useNavigate();
@@ -16,14 +17,14 @@ const ForgotPassword = () => {
   const handleSubmit=async(e)=>{
 e.preventDefault();
 try {
-  const response=await axios.post("http://localhost:9000/user/forgotpassword",data)
+  const response=await axios.post(`${url}/user/forgotpassword`,data)
 console.log(response.data);
 if(response){
   localStorage.setItem("resetAuth",response.data.data.token)
   navigate('/forpass-otp-confirm')
 }
 } catch (error) {
-  alert(error.response?.data?.data)
+ console.log(error);
 }
 
   }

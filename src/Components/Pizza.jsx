@@ -16,6 +16,7 @@ import { useFormik } from "formik";
 import axios from "axios";
 import MuiAlert from "@mui/material/Alert";
 import { Stack } from "@mui/system";
+import { url } from "../Config/api";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -39,19 +40,19 @@ const Pizza = ({ pizza, index }) => {
     },
     onSubmit: async () => {
       try {
-        setOpen(true);
         const { data,status } = await axios.put(
-          "http://localhost:9000/cart/addtocart",
+          `${url}/cart/addtocart`,
           values,
           {
             headers: {
-              Authorization: localStorage.getItem("AuthToken"),
+              authorization: localStorage.getItem("AuthToken"),
             },
           }
         );
         if(status === 200){
-          setData(data.data);
+          setOpen(true);
           dispatch(ADD_TO_CART([values]));
+          setData(data.data);
         }
       } catch (error) {
         setData(error.response.data.data);
@@ -69,7 +70,7 @@ const Pizza = ({ pizza, index }) => {
   values = { ...values, price: pizza.prices[0][values.selectsize] };
   return (
     <>
-    {pizza.stock > 0 ?     <div key={index}>
+    {pizza.stock > 0 ?<div key={index}>
       <div className="card">
         <img
           src={pizza.image}
@@ -131,7 +132,7 @@ const Pizza = ({ pizza, index }) => {
         </div>
       </div>
       <Stack sx={{ width: "100%" }}>
-        <Snackbar open={open} autoHideDuration={1000} onClose={handleClose}>
+        <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
           <Alert severity="success" sx={{ width: "100%" }}>
             {data}
           </Alert>

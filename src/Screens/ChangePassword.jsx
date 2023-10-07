@@ -11,6 +11,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { ref } from "yup";
 import axios from "axios";
+import { url } from "../Config/api";
 
 const fieldValidationSchema = yup.object({
   password: yup.string().min(8, "enter 8 digit password"),
@@ -33,7 +34,7 @@ export default function ChangePassword() {
         try {
           const pass = values.password;
           const token=localStorage.getItem("resetAuth")
-         const response=await axios.put("http://localhost:9000/user/change-password",{token,pass})
+         const response=await axios.put(`${url}/user/change-password`,{token,pass})
          if(response){
           localStorage.removeItem("resetAuth");
           navigate('/')

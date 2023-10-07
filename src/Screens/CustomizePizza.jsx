@@ -19,9 +19,9 @@ import { useTheme } from "@mui/material/styles";
 import Chip from "@mui/material/Chip";
 import { FormControl } from "@mui/material";
 import { useFormik } from "formik";
-import * as yup from "yup";
 import { ADD_TO_CART } from "../Redux/Slices/pizzaSlice";
 import { useDispatch } from "react-redux";
+import { url } from "../Config/api";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -52,7 +52,7 @@ function getStylings(nonVegTopping, name, theme) {
 }
 
 const CustomizePizza = () => {
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [vegTopping, setVegTopping] = useState([]);
   const [nonVegTopping, setNonVegTopping] = useState([]);
@@ -61,53 +61,53 @@ const CustomizePizza = () => {
   const [extraVegPrice, setExtraVegPrice] = useState(0);
   const [response, setResponse] = useState({});
   const { id } = useParams();
-  const { values, handleChange, handleSubmit, handleBlur, errors, touched } = useFormik({
-    initialValues: {
-      selectsize:"regular",
-      pizzabase:"Cheese_Burst",
-      sauce: "BBQ_Sauce",
-      cheese: "Cheddar_Cheese",
-      vegtoppings: [],
-      nonvegtoppings: [],
-      price: 0,
-      name:"",
-      image:"",
-      quantity:1,
-      customize: "customized pizza",
-      auth: localStorage.getItem("AuthToken"),
-      pizzaid:id,
-    },
-    onSubmit: async (values) => {
-      try {
-        values.price = pizzaPrice + extraVegPrice + extraNonvegPrice;
-        values.nonvegtoppings = nonVegTopping;
-        values.vegtoppings = vegTopping;
-        values.name=response.name;
-        values.image=response.image;
-console.log(values);
-        const { data,status } = await axios.put(
-          "http://localhost:9000/cart/addtocart",
-          values,
-          {
-            headers: {
-              Authorization: localStorage.getItem("AuthToken"),
-            },
+  const { values, handleChange, handleSubmit, handleBlur, errors, touched } =
+    useFormik({
+      initialValues: {
+        selectsize: "regular",
+        pizzabase: "Cheese_Burst",
+        sauce: "BBQ_Sauce",
+        cheese: "Cheddar_Cheese",
+        vegtoppings: [],
+        nonvegtoppings: [],
+        price: 0,
+        name: "",
+        image: "",
+        quantity: 1,
+        customize: "customized pizza",
+        auth: localStorage.getItem("AuthToken"),
+        pizzaid: id,
+      },
+      onSubmit: async (values) => {
+        try {
+          values.price = pizzaPrice + extraVegPrice + extraNonvegPrice;
+          values.nonvegtoppings = nonVegTopping;
+          values.vegtoppings = vegTopping;
+          values.name = response.name;
+          values.image = response.image;
+          console.log(values);
+          const { data, status } = await axios.put(
+            `${url}/cart/addtocart`,
+            values,
+            {
+              headers: {
+                Authorization: localStorage.getItem("AuthToken"),
+              },
+            }
+          );
+          if (status === 200) {
+            dispatch(ADD_TO_CART([values]));
+            navigate("/cartpage");
           }
-        );
-        if(status === 200){
-        dispatch(ADD_TO_CART([values]));
-        navigate("/cartpage")
+        } catch (error) {
+          console.log(error);
         }
-      } catch (error) {
-        console.log(error);
-      }
-  
-    },
-  });
+      },
+    });
 
   const getData = async () => {
     try {
-      const responses = await axios.get(`http://localhost:9000/pizza/${id}`, {
+      const responses = await axios.get(`${url}/pizza/${id}`, {
         headers: {
           Authorization: localStorage.getItem("AuthToken"),
         },
@@ -116,7 +116,6 @@ console.log(values);
       setPizzaPrice(responses.data.data?.prices[0]?.regular);
     } catch (error) {
       console.log(error);
-      alert(error.response?.data?.data);
     }
   };
 
@@ -125,10 +124,10 @@ console.log(values);
   }, []);
 
   useEffect(() => {
-    if(Object.keys(response).length > 0) {
+    if (Object.keys(response).length > 0) {
       setPizzaPrice(response?.prices[0][values.selectsize]);
     }
-  },[values.selectsize])
+  }, [values.selectsize]);
 
   const theme = useTheme();
 
@@ -152,7 +151,7 @@ console.log(values);
     setNonVegTopping(value);
   };
 
-   return (
+  return (
     <Navbar>
       {true},
       <div className="customize-container">
@@ -187,9 +186,11 @@ console.log(values);
                     </NativeSelect>
                   </FormControl>
                 </div>
-                {
-                  errors.selectsize && touched.selectsize ? <span style={{ color: "crimson" }}>{errors.selectsize}</span> : <></>
-                }
+                {errors.selectsize && touched.selectsize ? (
+                  <span style={{ color: "crimson" }}>{errors.selectsize}</span>
+                ) : (
+                  <></>
+                )}
                 <br />
                 <div>
                   <FormControl fullWidth>
@@ -212,9 +213,11 @@ console.log(values);
                     </NativeSelect>
                   </FormControl>
                 </div>
-               {
-                errors.pizzabase && touched.pizzabase ?  <span style={{ color: "crimson" }}>{errors.pizzabase}</span> : <></>
-               }
+                {errors.pizzabase && touched.pizzabase ? (
+                  <span style={{ color: "crimson" }}>{errors.pizzabase}</span>
+                ) : (
+                  <></>
+                )}
 
                 <br />
                 <div>
@@ -300,9 +303,11 @@ console.log(values);
                     </Select>
                   </FormControl>
                 </div>
-                {
-                  errors.vegtoppings ? <span style={{ color: "crimson" }}>{errors.vegtoppings}</span> : <></>
-                }
+                {errors.vegtoppings ? (
+                  <span style={{ color: "crimson" }}>{errors.vegtoppings}</span>
+                ) : (
+                  <></>
+                )}
                 <br />
                 <div>
                   <Typography>Select One free Meat</Typography>
@@ -367,7 +372,7 @@ console.log(values);
                     style={{
                       backgroundColor: "rgb(251, 197, 60)",
                       color: "#000",
-                      fontWeight:"bold"
+                      fontWeight: "bold",
                     }}
                   >
                     Add to cart

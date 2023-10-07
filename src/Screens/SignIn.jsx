@@ -24,6 +24,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import * as yup from "yup";
 import axios from "axios";
 import { useEffect } from "react";
+import { url } from "../Config/api";
 
 const fieldValidationSchema = yup.object({
   email: yup
@@ -49,13 +50,13 @@ export default function SignIn() {
       validationSchema: fieldValidationSchema,
       onSubmit: async(values) => {
        try {
-        const response=await axios.post("http://localhost:9000/user/signin",values)
+        const response=await axios.post(`${url}/user/signin`,values)
         if(response){
           localStorage.setItem("AuthToken",response.data.data.token)
           // navigate('/homepage')
         }
        } catch (error) {
-        alert(error.response?.data?.data)
+       console.log(error);
        }
       },
     });

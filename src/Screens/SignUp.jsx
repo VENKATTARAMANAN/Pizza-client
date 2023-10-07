@@ -14,6 +14,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { ref } from "yup";
 import axios from "axios";
+import { url } from "../Config/api";
 
 const fieldValidationSchema = yup.object({
   email: yup
@@ -41,12 +42,12 @@ export default function SignUp() {
       onSubmit: async(values) => {
          const {conf_pass,...rest}=values;
 try {
-  const response=await axios.post("http://localhost:9000/user/signup",rest)
+  const response=await axios.post(`${url}/user/signup`,rest)
   if(response){
     navigate('/signin')
   }
 } catch (error) {
-alert(error.response?.data?.data)
+console.log(error);
 }
       },
     });

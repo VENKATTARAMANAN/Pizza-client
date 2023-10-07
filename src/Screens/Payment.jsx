@@ -12,6 +12,7 @@ import MuiAlert from "@mui/material/Alert";
 import { Stack } from "@mui/system";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import { url } from "../Config/api";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -42,7 +43,7 @@ const Payment = () => {
             response = { ...response, ...val };
             try {
               const data = await axios.post(
-                "http://localhost:9000/pizza/verify",
+                `${url}/pizza/verify`,
                 response,
                 {
                   headers: {
@@ -73,7 +74,7 @@ const Payment = () => {
       const handlePayment = async () => {
         try {
           const response = await axios.post(
-            "http://localhost:9000/pizza/orders",
+            `${url}/pizza/orders`,
             { amount: id.price },
             {
               headers: {
@@ -92,7 +93,7 @@ const Payment = () => {
       const confirmOrder = async () => {
         try {
           const response = await axios.post(
-            "http://localhost:9000/payment/cod",
+            `${url}/payment/cod`,
             { token: token, total: id.price },{
               headers: {
                 Authorization: token,

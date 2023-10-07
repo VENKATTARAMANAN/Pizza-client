@@ -3,6 +3,7 @@ import Navbar from "../Components/Navbars";
 import axios from "axios";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { url } from "../Config/api";
 
 const OrderSummary = () => {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ const OrderSummary = () => {
     try {
       const token = localStorage.getItem("AuthToken");
       const response = await axios.post(
-        "http://localhost:9000/address/getaddress",
+        `${url}/address/getaddress`,
         { token: token },{
           headers:{
             Authorization:localStorage.getItem("AuthToken")
@@ -30,7 +31,7 @@ const OrderSummary = () => {
     try {
       const token = localStorage.getItem("AuthToken");
       const { data } = await axios.post(
-        "http://localhost:9000/cart/showcartquantity",
+        `${url}/cart/showcartquantity`,
         { token },
         {
           headers: {
