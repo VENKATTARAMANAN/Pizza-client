@@ -1,2 +1,2 @@
-export const url = "https://pizza-server-sigma.vercel.app";
+export const url = "http://localhost:9000";
 

@@ -21,7 +21,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 const Payment = () => {
   const id = useParams();
   const [open, setOpen] = useState(false);
-  const [data,setData]=useState("");
+  const [data, setData] = useState("");
   const token = localStorage.getItem("AuthToken");
   const navigate = useNavigate();
   const [payment, setPayment] = useState("Online Payment");
@@ -42,25 +42,22 @@ const Payment = () => {
             };
             response = { ...response, ...val };
             try {
-              const data = await axios.post(
-                `${url}/pizza/verify`,
-                response,
-                {
-                  headers: {
-                    Authorization: token,
-                  },
-                }
-              );
+              const data = await axios.post(`${url}/pizza/verify`, response, {
+                headers: {
+                  Authorization: token,
+                },
+              });
               if (data.status === 200) {
-                setData(data.data.data.datas)
-                setOpen(true)
-                setTimeout(()=>{
+                setData(data.data.data.datas);
+                setOpen(true);
+                setTimeout(() => {
                   navigate("/orderplaced");
-                 },1000)
-                
+                }, 1000);
               }
             } catch (error) {
               console.log(error);
+              setOpen(true);
+              setData(error.response.data.data);
             }
           },
           theme: {
@@ -86,6 +83,8 @@ const Payment = () => {
           initPayment(value);
         } catch (error) {
           console.log(error);
+          setOpen(true);
+          setData(error.response.data.data);
         }
       };
       handlePayment();
@@ -94,21 +93,24 @@ const Payment = () => {
         try {
           const response = await axios.post(
             `${url}/payment/cod`,
-            { token: token, total: id.price },{
+            { token: token, total: id.price },
+            {
               headers: {
                 Authorization: token,
               },
             }
           );
           if (response.status === 200) {
-           setData(response.data.data)
-            setOpen(true)
-                setTimeout(()=>{
-                  navigate("/orderplaced");
-                 },1000)
+            setData(response.data.data);
+            setOpen(true);
+            setTimeout(() => {
+              navigate("/orderplaced");
+            }, 1000);
           }
         } catch (error) {
           console.log(error);
+          setOpen(true);
+          setData(error.response.data.data);
         }
       };
       confirmOrder();

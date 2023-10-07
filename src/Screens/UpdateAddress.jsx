@@ -63,7 +63,7 @@ const UpdateAddress = () => {
         country: "",
         userid: localStorage.getItem("AuthToken"),
       },
-      validationSchema:fieldValidationSchema,
+      validationSchema: fieldValidationSchema,
       onSubmit: async () => {
         setOpen(true);
         try {
@@ -135,7 +135,6 @@ const UpdateAddress = () => {
               )}
 
               <TextField
-              
                 id="address-altphone"
                 label="Alternative Phone"
                 type="number"
@@ -152,7 +151,6 @@ const UpdateAddress = () => {
               )}
 
               <TextField
-                
                 id="address-houseno"
                 label="House/Flat No"
                 variant="outlined"
@@ -169,7 +167,6 @@ const UpdateAddress = () => {
               )}
 
               <TextField
-               
                 id="address-street"
                 label="Road/Street Name"
                 variant="outlined"
@@ -200,7 +197,6 @@ const UpdateAddress = () => {
               )}
 
               <TextField
-              
                 id="address-city"
                 label="City"
                 variant="outlined"
@@ -216,7 +212,6 @@ const UpdateAddress = () => {
               )}
 
               <TextField
-             
                 id="address-state"
                 label="State"
                 variant="outlined"
@@ -232,7 +227,6 @@ const UpdateAddress = () => {
               )}
 
               <TextField
-             
                 type="number"
                 id="address-pincode"
                 label="Pincode"
@@ -249,7 +243,6 @@ const UpdateAddress = () => {
               )}
 
               <TextField
-          
                 id="address-country"
                 label="Country"
                 variant="outlined"
@@ -271,7 +264,7 @@ const UpdateAddress = () => {
                   backgroundColor: "rgb(251, 197, 60)",
                   color: "#000",
                   fontWeight: "bold",
-                  marginBottom:15,
+                  marginBottom: 15,
                 }}
                 sx={{ width: 140 }}
               >

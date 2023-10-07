@@ -18,6 +18,7 @@ import {
   IconButton,
   InputAdornment,
   FormControl,
+  Snackbar,
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -25,6 +26,12 @@ import * as yup from "yup";
 import axios from "axios";
 import { useEffect } from "react";
 import { url } from "../Config/api";
+import MuiAlert from "@mui/material/Alert";
+import { Stack } from "@mui/system";
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const fieldValidationSchema = yup.object({
   email: yup
@@ -35,6 +42,8 @@ const fieldValidationSchema = yup.object({
 });
 export default function SignIn() {
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  const [data, setData] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (event) => {
@@ -48,26 +57,41 @@ export default function SignIn() {
         password: "",
       },
       validationSchema: fieldValidationSchema,
-      onSubmit: async(values) => {
-       try {
-        const response=await axios.post(`${url}/user/signin`,values)
-        if(response){
-          localStorage.setItem("AuthToken",response.data.data.token)
-          // navigate('/homepage')
+      onSubmit: async (values) => {
+        try {
+          const {data,status} = await axios.post(`${url}/user/signin`, values);
+          if (status === 200) {
+            setOpen(true);
+            localStorage.setItem("AuthToken",data.data.token);
+            setData(data.data.message)
+            navigate("/homepage")
+          }
+        } catch (error) {
+          console.log(error);
+          setOpen(true);
+          setData(error.response.data.data)
         }
-       } catch (error) {
-       console.log(error);
-       }
       },
     });
-    useEffect(()=>{
-let token=localStorage.getItem("AuthToken")
-if(token){
-  navigate('/homepage')
-}
-    })
+  useEffect(() => {
+    let token = localStorage.getItem("AuthToken");
+    if (token) {
+      navigate("/homepage");
+    }
+  },[]);
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
+  };
   return (
-    <Container style={{backgroundColor: "#fff"}} sx={{ boxShadow: 5 }} component="main" maxWidth="xs">
+    <Container
+      style={{ backgroundColor: "#fff" }}
+      sx={{ boxShadow: 5 }}
+      component="main"
+      maxWidth="xs"
+    >
       <CssBaseline />
       <Box
         sx={{
@@ -136,18 +160,33 @@ if(token){
           </form>
           <Grid container>
             <Grid item xs>
-              <Link style={{cursor:"pointer"}} onClick={() => navigate("/forgotpassword")} variant="body2">
+              <Link
+                style={{ cursor: "pointer" }}
+                onClick={() => navigate("/forgotpassword")}
+                variant="body2"
+              >
                 Forgot password?
               </Link>
             </Grid>
             <Grid item>
-              <Link  style={{cursor:"pointer"}} onClick={() => navigate("/signup")} variant="body2" >
+              <Link
+                style={{ cursor: "pointer" }}
+                onClick={() => navigate("/signup")}
+                variant="body2"
+              >
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>
           </Grid>
         </Box>
       </Box>
+      <Stack sx={{ width: "100%" }}>
+        <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
+          <Alert severity="success" sx={{ width: "100%" }}>
+            {data}
+          </Alert>
+        </Snackbar>
+      </Stack>
     </Container>
   );
 }

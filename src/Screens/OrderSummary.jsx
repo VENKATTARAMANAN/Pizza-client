@@ -15,10 +15,11 @@ const OrderSummary = () => {
       const token = localStorage.getItem("AuthToken");
       const response = await axios.post(
         `${url}/address/getaddress`,
-        { token: token },{
-          headers:{
-            Authorization:localStorage.getItem("AuthToken")
-          }
+        { token: token },
+        {
+          headers: {
+            Authorization: localStorage.getItem("AuthToken"),
+          },
         }
       );
       setAddress(response.data.data);
@@ -83,12 +84,13 @@ const OrderSummary = () => {
               </div>
             </div>
             <div className="delivery-ad-data">
+              {address.name},<br/>
               {address.houseno},{address.street},<br />
               {address.city},<br />
               {address.landmark},<br />
-              Phone:{address.phone},
-              <br />
-              AltPhone:{address.altphone}
+              {address.city}-{address.pincode}. <br />
+              Phone:{address.phone}
+             
             </div>
           </div>
           <div className="ordersummary-values">
@@ -98,7 +100,7 @@ const OrderSummary = () => {
                   <img src={val.image} alt="cart" />
                 </div>
                 <div className="cart-name">
-                  <div style={{width:"130px"}}>
+                  <div style={{ width: "130px" }}>
                     {val.name}
                     <span>({val.selectsize})</span>
                   </div>

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -12,6 +12,13 @@ import * as yup from "yup";
 import { ref } from "yup";
 import axios from "axios";
 import { url } from "../Config/api";
+import MuiAlert from "@mui/material/Alert";
+import { Stack } from "@mui/system";
+import { Snackbar } from "@mui/material";
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const fieldValidationSchema = yup.object({
   password: yup.string().min(8, "enter 8 digit password"),
@@ -23,6 +30,9 @@ const fieldValidationSchema = yup.object({
 
 export default function ChangePassword() {
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  const [data, setData] = useState("");
+
   const { handleSubmit, values, handleBlur, handleChange, errors, touched } =
     useFormik({
       initialValues: {
@@ -34,16 +44,28 @@ export default function ChangePassword() {
         try {
           const pass = values.password;
           const token=localStorage.getItem("resetAuth")
-         const response=await axios.put(`${url}/user/change-password`,{token,pass})
-         if(response){
+         const {data,status}=await axios.put(`${url}/user/change-password`,{token,pass})
+         if(status === 200){
+          setOpen(true)
+          setData(data.data.data)
           localStorage.removeItem("resetAuth");
           navigate('/')
          }
         } catch (error) {
             console.log(error);
+            setOpen(true)
+            setData(error.response.data.data)
         }
       },
     });
+
+    const handleClose = (event, reason) => {
+      if (reason === "clickaway") {
+        return;
+      }
+      setOpen(false);
+    };
+  
   return (
     <>
       <Box
@@ -106,6 +128,13 @@ export default function ChangePassword() {
           </form>
         </Box>
       </Container>
+      <Stack sx={{ width: "100%" }}>
+        <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
+          <Alert severity="success" sx={{ width: "100%" }}>
+            {data}
+          </Alert>
+        </Snackbar>
+      </Stack>
     </>
   );
 }

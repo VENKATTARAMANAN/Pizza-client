@@ -15,21 +15,31 @@ import * as yup from "yup";
 import { ref } from "yup";
 import axios from "axios";
 import { url } from "../Config/api";
+import MuiAlert from "@mui/material/Alert";
+import { Stack } from "@mui/system";
+import { Snackbar } from "@mui/material";
+import { useState } from "react";
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const fieldValidationSchema = yup.object({
   email: yup
     .string()
     .email("Enter valid Email")
     .required("Please enter the Email"),
-  password: yup.string().min(8, "enter 8 digit password"),
+  password: yup.string().required("Please enter the password").min(8, "enter 8 digit password"),
   conf_pass: yup
     .string()
-    .required("Please re-type your password")
+    .required("Please enter your confirm-password")
     .oneOf([ref("password")], "password does not match"),
 });
 
 export default function SignUp() {
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  const [data, setData] = useState("");
 
   const { handleSubmit, values, handleBlur, handleChange, errors, touched } =
     useFormik({
@@ -39,21 +49,36 @@ export default function SignUp() {
         conf_pass: "",
       },
       validationSchema: fieldValidationSchema,
-      onSubmit: async(values) => {
-         const {conf_pass,...rest}=values;
-try {
-  const response=await axios.post(`${url}/user/signup`,rest)
-  if(response){
-    navigate('/signin')
-  }
-} catch (error) {
-console.log(error);
-}
+      onSubmit: async (values) => {
+        const { conf_pass, ...rest } = values;
+        try {
+          const { data, status } = await axios.post(`${url}/user/signup`, rest);
+          if (status === 200) {
+            navigate("/signin");
+            setOpen(true);
+            setData(data.data.data);
+          }
+        } catch (error) {
+          console.log(error);
+          setOpen(true);
+          setData(error.response.data.data);
+        }
       },
     });
 
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
+  };
+
   return (
-    <Container sx={{ boxShadow: 5 ,bgcolor:"white"}} component="main" maxWidth="xs">
+    <Container
+      sx={{ boxShadow: 5, bgcolor: "white" }}
+      component="main"
+      maxWidth="xs"
+    >
       <CssBaseline />
       <Box
         sx={{
@@ -81,7 +106,11 @@ console.log(error);
             onChange={handleChange}
             onBlur={handleBlur}
           />
-          <span style={{ color: "crimson" }}>{errors.email}</span>
+          {errors.email && touched.email ? (
+            <span style={{ color: "crimson" }}>{errors.email}</span>
+          ) : (
+            <></>
+          )}
           <TextField
             margin="normal"
             fullWidth
@@ -93,8 +122,11 @@ console.log(error);
             onChange={handleChange}
             onBlur={handleBlur}
           />
-          <span style={{ color: "crimson" }}>{errors.password}</span>
-
+          {errors.password && touched.password ? (
+            <span style={{ color: "crimson" }}>{errors.password}</span>
+          ) : (
+            <></>
+          )}
           <TextField
             margin="normal"
             fullWidth
@@ -106,7 +138,11 @@ console.log(error);
             onChange={handleChange}
             onBlur={handleBlur}
           />
+          {errors.conf_pass && touched.conf_pass ? (
           <span style={{ color: "crimson" }}>{errors.conf_pass}</span>
+          ) : (
+            <></>
+          )}
           <Button
             type="submit"
             fullWidth
@@ -118,12 +154,23 @@ console.log(error);
         </form>
         <Grid container justifyContent="center">
           <Grid item>
-            <Link style={{cursor:"pointer"}} onClick={() => navigate("/signin")} variant="body2">
+            <Link
+              style={{ cursor: "pointer" }}
+              onClick={() => navigate("/signin")}
+              variant="body2"
+            >
               Already have an account? Sign up
             </Link>
           </Grid>
         </Grid>
       </Box>
+      <Stack sx={{ width: "100%" }}>
+        <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
+          <Alert severity="success" sx={{ width: "100%" }}>
+            {data}
+          </Alert>
+        </Snackbar>
+      </Stack>
     </Container>
   );
 }

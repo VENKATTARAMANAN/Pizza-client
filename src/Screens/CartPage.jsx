@@ -9,7 +9,7 @@ import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { useSelector } from "react-redux/es/hooks/useSelector";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import MuiAlert from "@mui/material/Alert";
 import { Stack } from "@mui/system";
 import { url } from "../Config/api";
@@ -23,7 +23,7 @@ const CartPage = () => {
   const [cartData, setCartData] = useState([]);
   const [price, setPrice] = useState("");
   const [open, setOpen] = useState(false);
-  const [data,setData]=useState("");
+  const [data, setData] = useState("");
   const cartArr = useSelector((state) => state.cartArr.cart);
 
   const getCartData = async () => {
@@ -46,6 +46,8 @@ const CartPage = () => {
       setPrice(sum);
     } catch (error) {
       console.log(error);
+      setOpen(true)
+      setData(error.response.data.data)
     }
   };
 
@@ -64,10 +66,11 @@ const CartPage = () => {
       );
       setOpen(true);
       getCartData();
-      setData(response.data.data)
+      setData(response.data.data);
     } catch (error) {
       console.log(error);
-
+      setOpen(true)
+      setData(error.response.data.data)
     }
   };
   const addQuantity = async (e) => {
@@ -85,11 +88,11 @@ const CartPage = () => {
       );
       setOpen(true);
       getCartData();
-      setData(response.data.data)
+      setData(response.data.data);
     } catch (error) {
       setOpen(true);
       console.log(error);
-      setData(error.response.data.data)
+      setData(error.response.data.data);
     }
   };
 
@@ -106,9 +109,11 @@ const CartPage = () => {
       );
       setOpen(true);
       getCartData();
-      setData(response.data.data)
+      setData(response.data.data);
     } catch (error) {
       console.log(error);
+      setOpen(true)
+      setData(error.response.data.data)
     }
   };
   useEffect(() => {
@@ -224,7 +229,7 @@ const CartPage = () => {
           </Button>
         </div>
       )}
-       <Stack sx={{ width: "100%" }}>
+      <Stack sx={{ width: "100%" }}>
         <Snackbar open={open} autoHideDuration={1000} onClose={handleClose}>
           <Alert severity="success" sx={{ width: "100%" }}>
             {data}
