@@ -85,7 +85,6 @@ const CustomizePizza = () => {
           values.vegtoppings = vegTopping;
           values.name = response.name;
           values.image = response.image;
-          console.log(values);
           const { data, status } = await axios.put(
             `${url}/cart/addtocart`,
             values,

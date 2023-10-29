@@ -25,7 +25,6 @@ const CheckForgetPassOtp = () => {
   });
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(otp);
     try {
       const {data,status} = await axios.post(`${url}/user/otp-confirm`, otp);
       if (status === 200) {

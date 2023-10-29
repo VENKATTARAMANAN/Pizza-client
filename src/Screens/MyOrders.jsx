@@ -10,7 +10,6 @@ import axios from "axios";
 import { Button, Step, StepLabel, Stepper } from "@mui/material";
 import Lottie from "lottie-react";
 import { useNavigate } from "react-router-dom";
-import emptycart from "../assets/empty_cart.json";
 import noorders from "../assets/no_orders.json";
 import { url } from "../Config/api";
 
