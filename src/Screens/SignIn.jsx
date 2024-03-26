@@ -53,8 +53,8 @@ export default function SignIn() {
   const { handleChange, values, handleSubmit, handleBlur, errors, touched } =
     useFormik({
       initialValues: {
-        email: "",
-        password: "",
+        email: "admin457@gmail.com",
+        password: "123456789",
       },
       validationSchema: fieldValidationSchema,
       onSubmit: async (values) => {

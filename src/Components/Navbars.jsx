@@ -67,7 +67,7 @@ useEffect(()=>{
 
   return (
     <>
-      <Box sx={{ flexGrow: 0 }} >
+      <Box sx={{ flexGrow: 0 }}  >
         <AppBar className="sticky" sx={{ bgcolor: "white" }}>
           <Toolbar sx={{ mx: 3}}>
             <div onClick={() => navigate("/homepage")}>
